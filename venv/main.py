@@ -1,6 +1,9 @@
 import random
 import time
 
+#TODO import dicts/functions
+# import game_data as gd
+
 game_stats = {
     'game_state': True,
     'combat_texts': ["THE BATTLE BEGINS", "CHAOS ENSUES", "TOTAL WAR!"],
@@ -43,22 +46,6 @@ def print_header():
     print("Aliens are attacking.  Choose a mech to defend the city!")
     print()
 
-def main():
-    print_header()
-
-    while True:
-        cmd = input("Choose your mech: [C]ombat, [T]ank, [A]rtillery | or E[x]it\n")
-        choice_mech = choose_mech(cmd)
-        random_alien = choose_alien()
-        print("A %s appears!\n" % random_alien.get('name'))
-
-        result = combat(choice_mech, random_alien)
-        update_state(result, choice_mech, random_alien)
-
-        if len(mechs) == 0:
-            print("Game over.")
-            break
-
 
 def update_state(result, mech, alien):
     if result:
@@ -67,7 +54,6 @@ def update_state(result, mech, alien):
         print("The %s defeated your %s" % (alien.get('name'), mech.get('name')))
         mechs.remove(mech)
 
-        print("%s lies in a heap on the battlefield... send in another mech?\n" % mech.get('name'))
 
 def combat(mech, alien):
     print(random.choice(game_stats['combat_texts']))
@@ -89,23 +75,46 @@ def choose_alien():
 # being reduced in size at first :D
 
 # TODO handle mech in and out of list operation
+# Figured out above, just a conditional problem.
 def choose_mech(choice):
     if choice.lower() == 'c' and combat_mech in mechs:
         try:
             return mechs[mechs.index(combat_mech)]
         except:
             print("Mech offline...")
-
-    elif choice.lower() == 't':
+    elif choice.lower() == 't' and tank_mech in mechs:
         try:
             return mechs[mechs.index(tank_mech)]
         except:
             print("Mech offline...")
-    else:
+    elif choice.lower() == 'a' and arti_mech in mechs:
         try:
             return mechs[mechs.index(arti_mech)]
         except:
             print("Mech offline...")
+    else:
+        print("That Mech is gone, commander...")
+        return False
+
+def main():
+    print_header()
+
+    while True:
+        cmd = input("Choose your mech: [C]ombat, [T]ank, [A]rtillery | or E[x]it\n")
+        choice_mech = choose_mech(cmd)
+        if not choice_mech:
+            continue
+        random_alien = choose_alien()
+        print("A %s appears!\n" % random_alien.get('name'))
+
+        result = combat(choice_mech, random_alien)
+        update_state(result, choice_mech, random_alien)
+
+        if len(mechs) == 0:
+            print("Game over.")
+            break
+
+        print("%s lies in a heap on the battlefield... send in another mech?\n" % choice_mech.get('name'))
 
 
 if __name__ == '__main__':
