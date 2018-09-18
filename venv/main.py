@@ -1,3 +1,6 @@
+# Quincy Tennyson
+# Computational Thinking - 2018/19
+
 import random
 import time
 
@@ -36,7 +39,12 @@ bit_8 = {
 aliens = [xeno, bit_8]
 mechs = [combat_mech, tank_mech, arti_mech]
 
+
 def print_header():
+    """
+    Prints a basic header for the game.
+    :return: None
+    """
     print("-------------------------")
     print("*** ** MECH BATTLE ** ***")
     print("-------------------------")
@@ -48,6 +56,13 @@ def print_header():
 
 
 def update_state(result, mech, alien):
+    """
+
+    :param result: The result of the mech v. alien contest.
+    :param mech: The mech currently in play.
+    :param alien: The alien currently in play.
+    :return: None
+    """
     if result:
         print("Well done, you defeated the %s \n" % alien.get('name'))
     else:
@@ -56,6 +71,13 @@ def update_state(result, mech, alien):
 
 
 def combat(mech, alien):
+    """
+    Simulates combat between the mech and alien based on
+    "power level"
+    :param mech: The mech currently in play.
+    :param alien: The alien currently in play.
+    :return: T/F based on result.
+    """
     print(random.choice(game_stats['combat_texts']))
     print()
     time.sleep(2)
@@ -77,6 +99,11 @@ def choose_alien():
 # TODO handle mech in and out of list operation
 # Figured out above, just a conditional problem.
 def choose_mech(choice):
+    """
+    Selects a Mech (dict) from available mechs (list)
+    :param choice: Player's choice of Mech.
+    :return: Mech to play with OR False if Mech is unavailable.
+    """
     if choice.lower() == 'c' and combat_mech in mechs:
         try:
             return mechs[mechs.index(combat_mech)]
@@ -97,6 +124,10 @@ def choose_mech(choice):
         return False
 
 def main():
+    """
+    Main game functionality occurs here in while loop.
+    :return: None
+    """
     print_header()
 
     while True:
